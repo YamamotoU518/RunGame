@@ -7,8 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance = null;
 
-    public bool _start;
-
+    /// <summary> Gameが始まっているか </summary>
+    public bool _isPlaying { get; set;}
+    
     private void Awake()
     {
         if (Instance == null)
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
         }
         Destroy(this.gameObject);
 
-        _start = false;
+        _isPlaying = false;
     }
 
     void Start()
@@ -33,6 +34,6 @@ public class GameManager : MonoBehaviour
 
     void GameStart()
     {
-        _start = true;
+        _isPlaying = true;
     }
 }

@@ -6,11 +6,14 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public static Player Instance = null;
-    
+    [Tooltip("Lane")]
     [SerializeField] private Transform[] _place;
     
-    private bool _finish;
-    float _z;
+    /// <summary> playerの座標 </summary>>
+    private Vector3 _pos;
+
+    /// <summary> 現在のレーン </summary>
+    private int _currentLane = 1;
 
     private void Awake()
     {
@@ -24,16 +27,32 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        _finish = false;
-        _z = this.gameObject.transform.position.z;
+        _pos = transform.position;
     }
     
     void FixedUpdate()
     {
-        if (GameManager.Instance._start)
+        if (GameManager.Instance._isPlaying)
         {
-            _z += 0.1f;
-            this.gameObject.transform.position = new Vector3(0, 1, _z);
+            _pos.z += 0.1f;
+            this.gameObject.transform.position = new Vector3(0, 1, _pos.z);
+        }
+    }
+
+    private void Update()
+    {
+        if (GameManager.Instance._isPlaying)
+        {
+            if (Input.GetKeyDown(KeyCode.A) && _currentLane > 0)
+            {
+                _currentLane--;
+            }
+            if (Input.GetKeyDown(KeyCode.D) && _currentLane < _place.Length - 1)
+            {
+                _currentLane++;
+            }
+            _pos.x = _place[_currentLane].transform.position.x;
+            transform.position = _pos;
         }
     }
 }
