@@ -6,9 +6,11 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public static Player Instance = null;
-    [Tooltip("Lane")]
-    [SerializeField] private Transform[] _place;
-    
+    [Tooltip("Lane")] [SerializeField] private Transform[] _place;
+
+    /// <summary> playerのz軸に動くスピード </summary>
+    [SerializeField] private int _speed = 0;
+
     /// <summary> playerの座標 </summary>>
     private Vector3 _pos;
 
@@ -22,6 +24,7 @@ public class Player : MonoBehaviour
             Instance = this;
             return;
         }
+
         Destroy(this.gameObject);
     }
 
@@ -30,15 +33,6 @@ public class Player : MonoBehaviour
         _pos = transform.position;
     }
     
-    void FixedUpdate()
-    {
-        if (GameManager.Instance._isPlaying)
-        {
-            _pos.z += 0.1f;
-            this.gameObject.transform.position = new Vector3(0, 1, _pos.z);
-        }
-    }
-
     private void Update()
     {
         if (GameManager.Instance._isPlaying)
@@ -47,12 +41,15 @@ public class Player : MonoBehaviour
             {
                 _currentLane--;
             }
+
             if (Input.GetKeyDown(KeyCode.D) && _currentLane < _place.Length - 1)
             {
                 _currentLane++;
             }
+
             _pos.x = _place[_currentLane].transform.position.x;
-            transform.position = _pos;
+            _pos.z += _speed * Time.deltaTime;
+            this.gameObject.transform.position = new Vector3(_pos.x, 1, _pos.z);
         }
     }
 }
