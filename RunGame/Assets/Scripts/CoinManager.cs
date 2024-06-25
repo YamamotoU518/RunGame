@@ -6,17 +6,19 @@ using UnityEngine.UI;
 
 public class CoinManager : MonoBehaviour
 {
-    public static CoinManager Instance = null;
+    public static CoinManager Instance => _instance;
+    private static CoinManager _instance;
 
     [SerializeField] private Text _text = null;
 
-    private int _currentCoin;
+    public int _currentCoin { get; private set; }
 
     void Awake()
     {
         if (Instance == null)
         {
-            Instance = this;
+            _instance = this;
+            DontDestroyOnLoad(this.gameObject);
             return;
         }
         Destroy(this.gameObject);
@@ -29,7 +31,7 @@ public class CoinManager : MonoBehaviour
     
     void Update()
     {
-        _text.text = _currentCoin.ToString();
+        if (_text) { _text.text = _currentCoin.ToString(); }
     }
 
     public void AddAmountOfCoins(int coin)
