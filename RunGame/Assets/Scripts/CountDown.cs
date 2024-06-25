@@ -21,7 +21,7 @@ public class CountDown : MonoBehaviour
         if (_num <= 0.5f)
         {
             _text.text = "Start!!";
-            Invoke("Delete", 2f);
+            Invoke("Delete", 1.5f);
             return;
         }
         _num -= Time.deltaTime;
