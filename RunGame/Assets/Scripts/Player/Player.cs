@@ -17,6 +17,9 @@ public class Player : MonoBehaviour
     /// <summary> 現在のレーン </summary>
     private int _currentLane = 1;
 
+    /// <summary> RunAnimation </summary>
+    [SerializeField] private Animator _anim = null;
+
     private void Awake()
     {
         if (Instance == null)
@@ -35,8 +38,9 @@ public class Player : MonoBehaviour
     
     private void Update()
     {
-        if (GameManager.Instance._isPlaying)
+        if (GameManager.Instance._gameState == GameState.IsPlaying)
         {
+            _anim.SetBool("Run", true);
             if (Input.GetKeyDown(KeyCode.A) && _currentLane > 0)
             {
                 _currentLane--;
